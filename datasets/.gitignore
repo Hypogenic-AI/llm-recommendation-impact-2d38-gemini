@@ -1,0 +1,13 @@
+# Exclude all data files (can be large)
+*.jsonl
+*.csv
+*.parquet
+*.zip
+*.tar.gz
+
+# But include documentation and small samples
+!.gitignore
+!README.md
+!musicrs_sample.jsonl
+!spotify_tracks_sample.jsonl
+!listening_history_sample.jsonl

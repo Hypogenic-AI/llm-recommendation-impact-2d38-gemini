@@ -1,0 +1,10 @@
+\section{Related Work}
+
+\para{LLMs for Recommendation}
+The application of LLMs to recommendation systems has seen rapid growth. Dai et al. \cite{dai2023uncovering} provided a foundational study on using ChatGPT for various recommendation tasks, concluding that list-wise ranking offers the best trade-off between performance and cost. However, their work primarily focused on general datasets and did not explore the specific nuances of music recommendation. More recent work has shifted towards generative evaluation and treating recommendation as a natural language task \cite{anonymous2025llmrec}.
+
+\para{Music Recommendation Benchmarks}
+Traditional music recommendation relies on massive user-item interaction matrices. The \musicrs benchmark \cite{surana2025musicrs} introduced a more conversational approach, integrating authentic user queries from Reddit with audio grounding. While they identified that LLMs excel at dialogue semantics, they also noted a failure to ground abstract musical concepts in actual audio features. Our work complements this by focusing on the "data export" workflow, where an LLM is provided with a textual representation of a user's listening history.
+
+\para{Qualitative Evaluation in RecSys}
+As recommendation systems move beyond simple accuracy, qualitative metrics like diversity, serendipity, and explainability have become more important. The "LLM-as-a-judge" paradigm has been proposed as a scalable proxy for human evaluation, particularly for profile-aware systems like podcast recommendation \cite{anonymous2025profilejudge}. We adopt this methodology to compare the semantic coherence of LLM suggestions against human-curated and algorithmic baselines.

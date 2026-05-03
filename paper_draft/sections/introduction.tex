@@ -1,0 +1,19 @@
+\section{Introduction}
+
+If a user exports their entire Spotify listening history and provides it to a state-of-the-art Large Language Model (LLM), can the resulting recommendations surpass those of Spotify's own highly optimized algorithms? This question is becoming increasingly relevant as users seek more agency over their personal data and more transparent, personalized AI experiences. Music discovery is a deeply emotional and context-dependent task where traditional algorithms often hit a ceiling of "thematic coherence."
+
+{\bf Why does this matter?} Specialized recommendation systems like Spotify's use collaborative filtering (CF) and content-based filtering (CBF) to process billions of user interactions. While effective at scale, these models often suffer from "filter bubbles"---recommending items within a narrow cluster of similarity---and fail to provide a rationale for their suggestions. LLMs, by contrast, possess vast semantic knowledge about musical genres, artists, and cultural contexts, allowing them to reason over a user's taste in a way that traditional interaction-based models cannot.
+
+{\bf What is missing?} Most research into LLM-based recommendation focuses on point-wise or pair-wise ranking on static datasets like MovieLens. There is a notable gap in direct comparisons between LLMs and specialized music recommendation baselines on real-world listening sequences, particularly in a zero-shot "data export" setting. Furthermore, standard metrics like Recall@k often fail to capture the qualitative aspects of music discovery, such as serendipity and diversity.
+
+In this paper, we evaluate the performance of \claudesonnet and \gptfour as zero-shot music recommenders. We utilize the \musicrs dataset \cite{surana2025musicrs} and a sample of raw \spotifydata to simulate the "Spotify Export" workflow. We compare LLM-generated recommendations against human-curated benchmarks and traditional baselines like \bpr \cite{rendle2012bpr}. To bridge the gap between quantitative and qualitative evaluation, we employ an \judge framework, using \gptfour as an independent music critic to score recommendations based on relevance, diversity, and thematic quality.
+
+{\bf Preview of results.} Our experiments reveal that LLMs matched or outperformed human-curated benchmarks in 80\% of test cases. Notably, in a blind comparison across five diverse music profiles, LLMs won 60\% of the time, tied 20\%, and lost to human curators only 20\% of the time. While traditional models like \bpr achieve higher hit rates for immediate next-track prediction, LLMs provide superior thematic coherence and can bridge disparate genres (e.g., Indie Folk and Metalcore) that interaction-based models often miss.
+
+Our main contributions are as follows:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item We evaluate \claudesonnet and \gptfour in a zero-shot music recommendation task, simulating a real-world "bring-your-own-data" workflow.
+    \item We conduct a comprehensive comparison between LLM-generated recommendations, human-curated benchmarks, and traditional collaborative filtering baselines.
+    \item We demonstrate that LLMs excel at semantic reasoning and cross-genre linking, outperforming human-curated sets in 60\% of cases as evaluated by an independent judge.
+    \item We identify key trade-offs between the "collaborative intelligence" of traditional systems and the "semantic intelligence" of LLMs.
+\end{itemize}

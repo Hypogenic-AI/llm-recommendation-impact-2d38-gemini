@@ -1,0 +1,450 @@
+You are an academic paper writer. Generate a complete NEURIPS style paper
+based on the experiment results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at .gemini/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW EXAMPLES: Browse paper_examples/ for formatting and language patterns:
+   - Look at sections/1.introduction.tex for language style
+   - Look at tables/*.tex for table formatting
+   - Look at commands/*.tex for macro usage
+4. VERIFY COMMAND TEMPLATES: Command templates (math.tex, general.tex, macros.tex) are pre-copied to paper_draft/commands/
+
+CRITICAL: Reference example papers for FORMATTING and LANGUAGE STYLE only.
+Do NOT copy content, phrasing, or narrative structure from the example papers.
+The examples are in a different research domain - focus only on presentation style.
+
+════════════════════════════════════════════════════════════════════════════════
+                            EXPERIMENT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Final Research Report: LLMs vs. Spotify Recommendations
+
+## 1. Executive Summary
+This research investigated whether Large Language Models (LLMs) can provide better music recommendations than Spotify&#39;s algorithms when provided with a user&#39;s listening data. Using the `MusiCRS` dataset (conversational music recommendations) and a sample of Spotify listening history, we compared LLM-generated recommendations against human-curated benchmarks and analyzed their quality using an &#34;LLM-as-a-judge&#34; framework.
+
+**Key Finding**: LLMs (specifically Claude 3.5 Sonnet and GPT-4o) matched or outperformed human-curated recommendations in 80% of test cases. They excel at understanding the semantic and emotional context of a user&#39;s taste, providing diverse and highly relevant suggestions across genres.
+
+## 2. Research Question &amp; Motivation
+**Question**: &#34;If I export all my Spotify data and ask Claude for recommendations, is it better than Spotify&#39;s own recommendations?&#34;
+
+**Motivation**: Spotify&#39;s recommendations are based on Collaborative Filtering (CF) and Content-Based Filtering (CBF). While effective, these models often suffer from &#34;filter bubbles&#34; and lack the ability to explain *why* a track is recommended. LLMs offer a potential paradigm shift by using semantic knowledge and reasoning to personalize music discovery.
+
+## 3. Methodology
+### 3.1 Approach
+We used two primary data sources:
+1.  **MusiCRS Dataset**: 10,000+ conversational music queries from Reddit. We used the &#34;Submission Text&#34; as the &#34;Spotify Data Export&#34; and the &#34;Comment Entities&#34; (human recommendations) as the gold standard.
+2.  **Spotify Listening History**: A sample of raw user sessions (Spotify Track IDs).
+
+### 3.2 Experimental Setup
+- **LLM**: Claude 3.5 Sonnet (via OpenRouter) and GPT-4o-mini.
+- **Judge**: GPT-4o was used as an independent &#34;Music Critic&#34; to evaluate sets of recommendations.
+- **Task**: Given a user profile or history, generate 10 recommendations.
+- **Evaluation**: 
+    - **Hit Rate**: Overlap with human recommendations.
+    - **Judicial Review**: Side-by-side comparison of LLM vs. Human recommendations based on Relevance, Diversity, and Quality.
+
+## 4. Results
+In a blind test of 5 diverse music preference profiles, the LLM-as-a-judge results were:
+- **LLM Wins**: 3/5 (60%)
+- **Ties**: 1/5 (20%)
+- **Human Wins**: 1/5 (20%)
+
+### Case Study: User 64861
+A user with a history of **Lord Huron (Indie Folk)**, **blink-182 (Pop-Punk)**, and **Asking Alexandria (Metalcore)**.
+- **LLM Recommendations**: Death Cab for Cutie, All Time Low, Bring Me The Horizon, The 1975.
+- **Analysis**: The LLM successfully bridged three distinct genres, identifying sophisticated links (e.g., linking Asking Alexandria to BMTH) that traditional algorithms often miss without large-scale user-item interaction data.
+
+## 5. Analysis &amp; Discussion
+### Why LLMs are &#34;Better&#34;:
+1.  **Semantic Reasoning**: LLMs understand *concepts* (e.g., &#34;lush late-romantic soundscapes&#34;) better than audio-feature-based models.
+2.  **Explanations**: LLMs provide rationale (e.g., &#34;This track has similar vocal runs to Melody Thornton&#34;), increasing trust and user engagement.
+3.  **Cold Start**: LLMs require zero historical data about other users to make high-quality predictions for a new user.
+
+### Where LLMs Fail:
+1.  **Deep Niche Knowledge**: For extremely specific sub-genres (e.g., specific Austro-German Romantic composers), human experts or specialized databases still provide more accurate &#34;thematic coherence.&#34;
+2.  **Real-time Feedback**: Spotify&#39;s edge remains its ability to process billions of &#34;skips&#34; and &#34;likes&#34; in real-time, which LLMs cannot do without a continuous data loop.
+
+## 6. Limitations
+- **Sample Size**: The experiment used a limited set of users due to API constraints.
+- **Ground Truth**: We used human-curated Reddit posts as a proxy for &#34;better than Spotify,&#34; assuming human curation is the gold standard Spotify aims for.
+- **ID Mapping**: Mapping raw Spotify IDs to names remains a hurdle for direct &#34;data export&#34; workflows without a large metadata database.
+
+## 7. Conclusions &amp; Next Steps
+**Conclusion**: Yes, asking an LLM for recommendations based on your Spotify data can often result in &#34;better&#34; (more diverse, explained, and context-aware) results than Spotify&#39;s automated playlists, especially for users with eclectic or specific tastes.
+
+**Next Steps**:
+- Develop a tool that automatically maps Spotify Export JSONs to Track Names for seamless LLM prompting.
+- Integrate audio features into the LLM prompt (e.g., &#34;Track A has energy: 0.8&#34;) to combine CF and semantic power.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Plan: LLMs vs. Spotify Recommendation Algorithms
+
+## Motivation &amp; Novelty Assessment
+
+### Why This Research Matters
+Users are increasingly interested in &#34;bringing their own data&#34; to LLMs to get more personalized experiences. Music recommendation is a highly personal and emotional domain where traditional algorithms (like Spotify&#39;s) have set a high bar. Understanding if a general-purpose LLM can outperform these specialized systems is crucial for the future of personalized AI.
+
+### Gap in Existing Work
+Most RecSys research focuses on collaborative filtering on static datasets (MovieLens, Amazon). While &#34;LLM-as-recommender&#34; is a growing field, there is a lack of direct comparison between the &#34;data export + LLM&#34; workflow and specialized music recommendation baselines on real-world listening sequences.
+
+### Our Novel Contribution
+We will simulate the &#34;Spotify Export&#34; workflow using a real-world listening history dataset. We will compare Claude 3.5 Sonnet&#39;s zero-shot and few-shot recommendations against a strong traditional baseline (BPR/LightGCN) using both predictive metrics (Recall@K) and qualitative &#34;LLM-as-a-judge&#34; evaluations.
+
+### Experiment Justification
+- **Experiment 1: Next-Item Prediction (Quantitative)**
+  - *Why*: To measure the objective ability of the LLM to capture the user&#39;s immediate musical trajectory.
+  - *Metric*: Recall@5, NDCG@5.
+- **Experiment 2: Recommendation Quality (Qualitative)**
+  - *Why*: &#34;Better&#34; in music is often about discovery, diversity, and thematic coherence, which Recall doesn&#39;t capture.
+  - *Metric*: LLM-as-a-judge scores for Relevance, Diversity, and Serendipity.
+
+---
+
+## Research Question
+&#34;If I export all my Spotify data and ask Claude for recommendations, is it better than Spotify&#39;s own recommendations?&#34;
+
+## Hypothesis Decomposition
+1. **H1 (Utility)**: Claude can predict the next tracks in a user session with accuracy comparable to traditional baselines.
+2. **H2 (Quality)**: Claude&#39;s recommendations are perceived as more &#34;thematically coherent&#34; and &#34;personalized&#34; than traditional baselines when evaluated qualitatively.
+
+## Proposed Methodology
+
+### Approach
+We will use the `listening-history-sample.jsonl` dataset as a proxy for Spotify export data. Each user session will be split into a &#34;History&#34; (prefix) and &#34;Target&#34; (remainder). 
+- **LLM**: Claude 3.5 Sonnet (via API).
+- **Baseline**: A traditional Matrix Factorization or Graph-based model (from `recommenders_team`).
+- **Evaluation**: 
+  - Compare predicted tracks with target tracks.
+  - Use a separate &#34;Judge LLM&#34; to compare the quality of LLM vs. Baseline outputs.
+
+### Experimental Steps
+1. **Data Preprocessing**:
+   - Map Spotify IDs to Track/Artist names using `spotify_tracks_sample.jsonl`.
+   - Filter sessions to ensure minimum length (e.g., 10 tracks).
+2. **Baseline Implementation**:
+   - Train a BPR (Bayesian Personalized Ranking) model on the training portion of the listening history.
+3. **LLM Prompting**:
+   - Design a prompt that takes the user history (Track Name - Artist) and asks for 5-10 recommendations.
+   - Test Zero-shot and Few-shot (if possible with session data).
+4. **Evaluation**:
+   - Calculate Recall@5 and NDCG@5 for both.
+   - Run LLM-as-a-judge on a sample of users.
+
+### Baselines
+- **BPR (Bayesian Personalized Ranking)**: A standard and strong baseline for implicit feedback.
+- **Popularity**: To see how much &#34;better&#34; the models are than just suggesting top tracks.
+
+### Evaluation Metrics
+- **Recall@5**: Fraction of target tracks captured in top 5 recommendations.
+- **NDCG@5**: Normalized Discounted Cumulative Gain (ranking quality).
+- **Quality Score (1-10)**: Judged by an independent LLM on relevance to history.
+
+## Expected Outcomes
+We expect the LLM to have lower Recall than the baseline (as it hasn&#39;t seen millions of other users&#39; patterns) but higher Quality scores (as it understands the *meaning* of the track titles and genres).
+
+## Timeline and Milestones
+- **Hour 1**: Data prep and environment setup.
+- **Hour 2**: Baseline training and evaluation.
+- **Hour 3**: LLM evaluation and qualitative judging.
+- **Hour 4**: Analysis and Report writing.
+
+## Success Criteria
+The research is successful if we can quantify the trade-off between traditional &#34;collaborative&#34; intelligence and LLM &#34;semantic&#34; intelligence in music recommendation.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: LLMs vs. Traditional Recommendation Algorithms for Music
+
+## Research Area Overview
+Large Language Models (LLMs) are increasingly being applied to Recommendation Systems (RecSys). Traditional systems primarily rely on Collaborative Filtering (CF) and Content-Based Filtering (CBF). LLMs offer a new paradigm by treating recommendation as a natural language task, allowing for zero-shot and few-shot capabilities, conversational interfaces, and reasoning over unstructured data.
+
+## Key Papers
+
+### 1. Uncovering ChatGPT’s Capabilities in Recommender Systems (2023)
+- **Authors**: Sunhao Dai et al.
+- **Key Contribution**: Investigates how to align ChatGPT with recommendation tasks using point-wise, pair-wise, and list-wise ranking.
+- **Key Findings**: List-wise ranking provides the best balance of cost and performance. ChatGPT shows strong zero-shot performance but still struggles in some traditional metrics compared to state-of-the-art specialized models.
+- **Relevance**: Provides the foundational prompting strategies (list-wise ranking) for evaluating LLMs as recommenders.
+
+### 2. MusiCRS: Benchmarking Audio-Centric Conversational Recommendation (2025)
+- **Authors**: Rohan Surana et al.
+- **Key Contribution**: Introduces a benchmark for music recommendation that integrates authentic user conversations (Reddit) with audio grounding.
+- **Key Findings**: Current systems struggle with cross-modal integration (audio + text). LLMs excel at dialogue semantics but fail to ground abstract musical concepts in actual audio.
+- **Relevance**: Provides a specific benchmark and dataset for conversational music recommendation, which is a key part of the hypothesis.
+
+### 3. Music Recommendation with Large Language Models: Challenges, Opportunities, and Evaluation (2025)
+- **Key Contribution**: Discusses the transition from ranking-based to generative evaluation.
+- **Key Findings**: Evaluation of LLMs requires new metrics beyond NDCG/Recall, such as &#34;LLM-as-a-judge&#34; or human-centric qualitative assessment.
+- **Relevance**: Directly addresses the &#34;evaluation&#34; aspect of the hypothesis—how to tell if LLM recommendations are &#34;better&#34; than Spotify&#39;s.
+
+### 4. Evaluating Podcast Recommendations with Profile-Aware LLM-as-a-Judge (2025)
+- **Key Contribution**: Specifically looks at Spotify data (podcasts) and uses LLMs to evaluate recommendation quality.
+- **Relevance**: Proof of concept for using LLMs to evaluate Spotify-like recommendations.
+
+## Common Methodologies
+1. **Prompting Strategies**: List-wise ranking is preferred over point-wise (too expensive) or pair-wise (too many combinations).
+2. **In-Context Learning (ICL)**: Providing a few examples of user history to the LLM to improve personalization.
+3. **Multimodal Integration**: Combining track metadata (text) with audio features or raw audio.
+
+## Evaluation Metrics
+- **Traditional**: NDCG, Recall@K, Precision@K.
+- **LLM-Specific**: Diversity, Explainability, &#34;LLM-as-a-judge&#34; (using a stronger LLM like GPT-4o or Claude 3.5 Sonnet to score recommendations).
+
+## Recommendations for Our Experiment
+- **Dataset**: Use `talkpl-ai/listening-history-filtered` as a proxy for Spotify export data.
+- **Baseline**: Compare LLM (Claude/GPT) against traditional baselines from the `Microsoft Recommenders` repo and `MusiCRS` baselines.
+- **Evaluation**: Use both traditional metrics (Recall@K) and an &#34;LLM-as-a-judge&#34; setup where the LLM explains why a recommendation is good based on the user&#39;s history.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete academic paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey main finding or contribution
+
+2. AUTHOR
+   - Use this exact author line in the \author{} block: Ari Holtzman and NeuriCo
+
+3. ABSTRACT (150-250 words)
+   - Problem statement
+   - Approach
+   - Key results
+   - Significance
+
+4. INTRODUCTION
+   - Research problem and motivation
+   - Gap in existing work
+   - Our contribution (be specific)
+   - Paper organization
+
+5. RELATED WORK
+   - Organized by theme/approach
+   - Position our work relative to prior work
+   - Cite papers from literature review
+
+6. METHODOLOGY
+   - Clear description of approach
+   - Experimental setup
+   - Datasets used
+   - Evaluation metrics
+   - Baselines
+
+7. RESULTS
+   - Present results with tables and figures
+   - Statistical analysis
+   - Comparison to baselines
+   - Ablation studies (if applicable)
+
+8. DISCUSSION
+   - Interpretation of results
+   - Limitations
+   - Broader implications
+
+9. CONCLUSION
+   - Summary of contributions
+   - Key findings
+   - Future work
+
+10. REFERENCES
+   - BibTeX format
+   - All cited papers
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── related_work.tex  # Related work section
+│   ├── methodology.tex   # Methodology section
+│   ├── results.tex       # Results section
+│   ├── discussion.tex    # Discussion section
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+├── tables/               # Directory for complex standalone tables
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/tables paper_draft/appendix)
+2. Write main.tex using the EXACT preamble for NEURIPS:
+
+   \documentclass{article}
+   \usepackage[final]{neurips_2025}  % NEURIPS style (neurips_2025.sty is in paper_draft/)
+   \usepackage[hidelinks]{hyperref}  % REQUIRED: clickable links
+   \usepackage{booktabs}  % REQUIRED: professional tables
+   \usepackage{graphicx}
+   \usepackage{amsmath,amssymb}
+
+   % Import command files
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+   % Use this bibliography style:
+   \bibliographystyle{plainnat}
+
+   \author{Ari Holtzman and NeuriCo}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic tone throughout
+- All claims must be supported by data from the experiment report
+- Proper citations using \cite{} commands
+- Clear figures and tables with proper captions
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                          LAB WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these lab-specific conventions to match our paper style:
+
+1. LANGUAGE STYLE:
+   - Use active voice: "We propose", "We examine", "We focus on"
+   - Be direct and confident: "Our main question is...", "We hypothesize that..."
+   - State things clearly and simply - prefer plain language over jargon
+   - Use bold questions as paragraph organizers: {\bf what is X?}
+   - Include specific quantitative claims: "8.97% over baseline"
+   - Avoid fancy wording: "utilize" → "use", "facilitate" → "help"
+
+2. INTRODUCTION STRUCTURE:
+   - Engaging hook (get to the point quickly)
+   - Problem importance
+   - Gap identification
+   - Your approach with method figure reference
+   - Quantitative preview of results
+   - Contribution bullets (3-4 items, action verbs)
+
+3. CONTRIBUTION LISTS:
+   \begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+       \item We propose...
+       \item We conduct...
+       \item We complement...
+   \end{itemize}
+
+4. MODULAR COMMANDS STRUCTURE:
+   Command templates are pre-copied to paper_draft/commands/:
+   - math.tex: Math notation macros
+   - general.tex: Formatting macros
+   - macros.tex: Project-specific term definitions (customize this for your paper)
+
+   In main.tex, include:
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+5. REFERENCE CONVENTIONS:
+   Use reference macros from math.tex:
+   - \figref{fig:name} for "figure 1" (lowercase, in-sentence)
+   - \Figref{fig:name} for "Figure 1" (capitalized, start of sentence)
+   - \secref{sec:name} for "section 2"
+
+6. TEXT FORMATTING:
+   - Use \para{Header text} for bold paragraph headers
+   - Define method/dataset names with \textsc and \xspace:
+     \newcommand{\methodname}{\textsc{MethodName}\xspace}
+
+7. TABLE FORMATTING:
+   - Use booktabs package (no vertical lines)
+   - Use \resizebox{\textwidth}{!}{...} for wide tables
+   - Use @{} to remove padding at table edges
+   - Use \cmidrule(lr){x-y} for sub-headers
+   - Use \textsc{} for dataset/method names in headers
+   - Bold best results with {\bf ...}
+
+8. FIGURE FORMATTING:
+   - Use 0.32\textwidth for 3-column subfigures
+   - Use 0.95\linewidth for full-width figures
+   - Use \input{figures/legend} for shared legends
+   - Write self-contained captions explaining key observations
+
+9. RESULTS PRESENTATION:
+   - Define \increase and \decrease for colored arrows (green up, red down)
+   - Bold best results in tables
+   - Report confidence intervals when available
+
+10. ALGORITHM STYLING:
+    - Use algpseudocode with [noend]
+    - Use \triangleright for comments
+
+11. HYPERLINKS (REQUIRED):
+    - Always use \usepackage[hidelinks]{hyperref} or with colored links
+    - All citations, section refs, figure refs, table refs must be clickable
+    - This is essential for reader navigation
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read .gemini/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Browse paper_examples/ for formatting and language patterns
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   LANGUAGE CHECK:
+   - [ ] Is the writing clear and jargon-free?
+   - [ ] Are claims specific with quantitative support?
+   - [ ] Is active voice used throughout?
+
+   FORMATTING CHECK:
+   - [ ] Does main.tex include \input{commands/math}, \input{commands/general}, \input{commands/macros}?
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Do tables use booktabs (no vertical lines)?
+   - [ ] Are best results bolded in tables?
+   - [ ] Are figures/tables properly captioned?
+
+   STRUCTURE CHECK:
+   - [ ] Does introduction follow: hook → importance → gap → approach → preview → contributions?
+   - [ ] Are contribution bullets specific with action verbs?
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

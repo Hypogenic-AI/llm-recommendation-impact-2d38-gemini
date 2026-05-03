@@ -1,0 +1,20 @@
+\section{Discussion}
+
+The results of our study suggest that LLMs are not just a tool for text generation, but a powerful engine for personalized music discovery. We identify three key reasons for their success:
+
+\para{Semantic Reasoning vs. Statistical Co-occurrence}
+Traditional RecSys is limited by the "long tail" of user interactions. If an artist is niche or a combination of tastes is rare, collaborative filtering fails. LLMs, however, understand the *concept* of a "lush late-romantic soundscape" or "mid-2000s emo-revival." This allows them to make high-quality predictions for new users (the "cold start" problem) without needing historical data from millions of others.
+
+\para{The Value of Explanations}
+One of the most significant advantages of LLMs is their ability to provide a rationale. By explaining *why* a track is recommended (e.g., "similar vocal runs to Melody Thornton"), the model increases user trust and engagement. This transparency is entirely absent in "black-box" models like \lightgcn.
+
+\para{Limitations}
+Despite their strengths, LLMs have clear limitations:
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item {\bf Deep Niche Knowledge}: For extremely specific sub-genres (e.g., Austro-German Romantic composers), human experts or specialized metadata databases still provide more accurate thematic coherence.
+    \item {\bf Real-time Feedback Loops}: Systems like Spotify can process "skips" and "likes" in real-time. LLMs currently operate in a batch-prompting mode, making them less responsive to immediate user feedback.
+    \item {\bf Sample Size}: Our qualitative evaluation was limited to 5 profiles due to API constraints. Larger-scale human studies are needed to confirm these findings.
+\end{itemize}
+
+\para{Broader Implications}
+Our work supports a move towards "Bring Your Own Data" (BYOD) AI systems. If a general-purpose LLM can outperform a specialized algorithm using just a textual export of user history, the competitive moat of proprietary recommendation data may be narrower than previously thought. This has significant implications for data portability and the future of platform-agnostic personalization.
