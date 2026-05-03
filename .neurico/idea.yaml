@@ -1,0 +1,22 @@
+idea:
+  title: How much do LLMs solve recommendation algorithms?
+  domain: artificial_intelligence
+  hypothesis: 'If a large language model such as Claude is given exported Spotify
+    data and asked for music recommendations, will its recommendations be better than
+    those provided by Spotify''s own recommendation algorithms?
+
+    '
+  background:
+    description: 'If I export all my Spotify data and ask Claude for recommendations
+      is it better than Spotify recommendations?
+
+      '
+  metadata:
+    author: Ari Holtzman
+    source: IdeaHub
+    source_url: https://hypogenic.ai/ideahub/idea/gRomig4ZYTsbmo8NsKJD
+    idea_id: how_much_do_llms_solve_recomme_20260503_210655_ec22c96f
+    created_at: '2026-05-03T21:06:55.986073'
+    status: submitted
+    github_repo_name: llm-recommendation-impact-2d38-gemini
+    github_repo_url: https://github.com/Hypogenic-AI/llm-recommendation-impact-2d38-gemini
